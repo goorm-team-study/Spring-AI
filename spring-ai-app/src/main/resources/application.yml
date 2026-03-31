@@ -1,0 +1,74 @@
+server:
+  port: 8080
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: Spring-ai-app
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sprain_vector
+    username: tony
+    password: stark
+    driver-class-name: org.postgresql.Driver
+  ai:
+#    vectorstore:
+#      pgvector:
+#        initialize-schema: false
+#        dimensions: 2048
+#        distance-type: cosine  # COSINE_DISTANCE → cosine
+#        index-type: hnsw
+#    mcp:
+#      client:
+#        type: SYNC
+#        toolcallback:
+#          enabled: true
+#        streamable-http:
+#          connections:
+#            weather-server:
+#              url: http://localhost:8081
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY}
+      chat:
+        options:
+          model: claude-sonnet-4-5-20250929  # or claude-opus-4.1
+          temperature: 0.7
+          max-tokens: 4096
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini # 모델 입력 # 필수
+          temperature: 0.7
+          maxTokens: 4096
+          # 아래는 세부 GPT 모델 설정 값
+#          temperature:
+#          frequencyPenalty:
+#          presencePenalty:
+#          maxTokens:
+#          topP:
+#    ollama:
+#      base-url: http://localhost:11434  # OLLAMA 서버 주소
+#      embedding:
+#        options:
+#          model: nomic-embed-text
+#      chat:
+#        options:
+#
+#          model: qwen2.5:3b              # 사용할 모델
+#          temperature: 0.7               # 창의성 (0.0 ~ 1.0)
+#          num-predict: 1000              # 최대 생성 토큰 수# 로깅 설정 (선택사항)
+#      timeout: 10000s
+
+#external:
+#  api:
+#    weather:
+#      url: https://apihub.kma.go.kr/
+#      api-key: ${OPEN_WEATHER_API_KEY}
+logging:
+  level:
+    org.springframework: INFO
+    org.springframework.ai: DEBUG
+    org.springframework.ai.mcp: TRACE  # ⭐ TRACE로 상향
+    org.springframework.ai.mcp.client: TRACE  # ⭐ Client 상세 로그
+    io.modelcontextprotocol: DEBUG
+    reactor.netty: DEBUG  # ⭐ 네트워크 로그
